@@ -26,6 +26,33 @@ def fetch_input_dim(config, decoder=False):
         return 1024 * k
 
 
+class RNNFeatureExtractor(nn.Module):
+    def __init__(self, input_size, hidden_size, num_layers=1, dropout=0.5):
+        super(RNNFeatureExtractor, self).__init__()
+        
+        # Impostiamo bidirectional=False (default)
+        self.rnn = nn.LSTM(
+            input_size=input_size,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            batch_first=True,
+            dropout=dropout,
+            bidirectional=False 
+        )
+
+    def forward(self, x):
+        # x shape: [Batch Size, Seq Len, Input Size]
+        
+        # out shape: [Batch Size, Seq Len, Hidden Size]
+        out, _ = self.rnn(x)
+        
+        # Prendiamo solo l'ultimo step temporale
+        # Questo è il vettore che riassume tutta la sequenza letta da sinistra a destra
+        last_hidden_state = out[:, -1, :] 
+        
+        # Ritorniamo un tensore 2D: [Batch Size, Hidden Size]
+        return last_hidden_state
+
 
 class MLP(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
