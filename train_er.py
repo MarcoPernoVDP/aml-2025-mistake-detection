@@ -33,9 +33,10 @@ def inspect_first_batch(train_loader, val_loader, test_loader):
 
 def train_step_test_step_er(config):
     train_loader, val_loader, test_loader = train_step_test_step_dataset_base(config)
+    
     inspect_first_batch(train_loader, val_loader, test_loader)
 
-    #train_model_base(train_loader, val_loader, config, test_loader=test_loader)
+    train_model_base(train_loader, val_loader, config, test_loader=test_loader)
 
 
 def main():
