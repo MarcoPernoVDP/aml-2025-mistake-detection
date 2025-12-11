@@ -26,9 +26,9 @@ def fetch_input_dim(config, decoder=False):
         return 1024 * k
 
 
-class RNNFeatureExtractor(nn.Module):
+class RNN(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers=1, dropout=0.5):
-        super(RNNFeatureExtractor, self).__init__()
+        super(RNN, self).__init__()
         
         # Impostiamo bidirectional=False (default)
         self.rnn = nn.LSTM(
