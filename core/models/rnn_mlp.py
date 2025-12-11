@@ -28,7 +28,6 @@ class RNNMLP(nn.Module):
             hidden_size=rnn_hidden_size, 
             num_layers=rnn_num_layers, 
             dropout=0.5, 
-            bidirectional=False
         )
         
         # 2. Decoder MLP
