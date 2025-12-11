@@ -61,6 +61,7 @@ class MLP(nn.Module):
         self.layer2 = nn.Linear(hidden_size, output_size)
 
     def forward(self, x):
+        print("MLP input:", x.shape)
         x = torch.relu(self.layer1(x))
         x = self.layer2(x)
         return x
