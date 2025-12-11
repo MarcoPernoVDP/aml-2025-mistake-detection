@@ -29,30 +29,48 @@ def fetch_input_dim(config, decoder=False):
 class RNN(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers=1, dropout=0.5):
         super(RNN, self).__init__()
-        
-        # Impostiamo bidirectional=False (default)
+
         self.rnn = nn.LSTM(
             input_size=input_size,
             hidden_size=hidden_size,
             num_layers=num_layers,
             batch_first=True,
             dropout=dropout,
-            bidirectional=False 
+            bidirectional=False
         )
 
     def forward(self, x):
-        # x shape: [Batch Size, Seq Len, Input Size]
-        
-        # out shape: [Batch Size, Seq Len, Hidden Size]
+        """
+        x shape attuale dal dataloader:
+            [Seq Len, Input Size]
+        """
+        # Aggiunge batch dimension
+        # -> [1, Seq Len, Input Size]
+        if x.ndim == 2:
+            x = x.unsqueeze(0)
+
+        # out: [1, Seq Len, Hidden Size]
         out, _ = self.rnn(x)
-        
-        # Prendiamo solo l'ultimo step temporale
-        # Questo è il vettore che riassume tutta la sequenza letta da sinistra a destra
-        last_hidden_state = out[:, -1] 
-        
-        # Ritorniamo un tensore 2D: [Batch Size, Hidden Size]
+
+        # last hidden state: [1, Hidden Size]
+        last_hidden_state = out[:, -1, :]
+
         return last_hidden_state
 
+class MLP2(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(MLP, self).__init__()
+        self.layer1 = nn.Linear(input_size, hidden_size)
+        self.layer2 = nn.Linear(hidden_size, output_size)
+
+    def forward(self, x):
+        # Se arriva [H], lo rendo [1, H]
+        if x.ndim == 1:
+            x = x.unsqueeze(0)
+
+        x = torch.relu(self.layer1(x))
+        x = self.layer2(x)
+        return x  # shape: [1, output_size]
 
 class MLP(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
