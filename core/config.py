@@ -18,7 +18,7 @@ class Config(object):
         self.segment_features_directory = "data/"
 
         self.ckpt_directory = "/data/rohith/captain_cook/checkpoints/"
-        self.split = "recordings"
+        self.split = "step"
         self.batch_size = 1
         self.test_batch_size = 1
         self.num_epochs = 10
@@ -30,7 +30,7 @@ class Config(object):
         self.seed = 1000
         self.device = "cuda"
 
-        self.variant = const.TRANSFORMER_VARIANT
+        self.variant = const.RNN_VARIANT
         self.model_name = None
         self.task_name = const.ERROR_RECOGNITION
         self.error_category = None
