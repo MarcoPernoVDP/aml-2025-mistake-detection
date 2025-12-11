@@ -48,7 +48,7 @@ class RNN(nn.Module):
         
         # Prendiamo solo l'ultimo step temporale
         # Questo è il vettore che riassume tutta la sequenza letta da sinistra a destra
-        last_hidden_state = out[:, -1, :] 
+        last_hidden_state = out[:, -1] 
         
         # Ritorniamo un tensore 2D: [Batch Size, Hidden Size]
         return last_hidden_state
