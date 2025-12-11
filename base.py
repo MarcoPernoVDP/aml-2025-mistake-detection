@@ -194,7 +194,10 @@ def train_model_base(train_loader, val_loader, config, test_loader=None):
 
                 optimizer.zero_grad()
                 output = model(data)
-                loss = criterion(output, target)
+                # target: [Seq Len,1] -> ridotto a un singolo valore per passo
+                # se vuoi considerare errore in qualsiasi frame:
+                target_step = target.max(dim=0, keepdim=True)[0]  # [1,1]
+                loss = criterion(output, target_step)
 
                 if torch.isnan(loss).any():
                     print(f"Loss contains NaN values in epoch {epoch}, batch {batch_idx}")
