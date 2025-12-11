@@ -37,6 +37,7 @@ class RNNMLP(nn.Module):
         rnn_features = self.rnn(input_data)
 
         # => final_output: [1, 1]
-        final_output = self.decoder(rnn_features)
+        final_output = self.decoder(rnn_features.unsqueeze(0))  # shape [1,1]
+
 
         return final_output
