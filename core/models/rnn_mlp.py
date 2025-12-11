@@ -46,8 +46,9 @@ class RNNMLP(nn.Module):
 
         # 2. Feature Extraction (RNN)
         # L'RNN restituisce un tensore: [Batch Size, 512]
+        print("Shape input_data:", input_data.shape)
         rnn_features = self.rnn(input_data)
-        
+        print("Shape rnn_features:", rnn_features.shape)
         # (Opzionale) Debug dimensioni se necessario:
         # print(f"Shape uscita RNN: {rnn_features.shape}") 
 
