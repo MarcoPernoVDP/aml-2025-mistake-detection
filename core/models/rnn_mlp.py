@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from core.models.blocks import RNN, MLP2, fetch_input_dim
+from core.models.blocks import RNN, MLP, fetch_input_dim
 
 class RNNMLP(nn.Module):
     def __init__(self, config, *args, **kwargs):
@@ -23,7 +23,7 @@ class RNNMLP(nn.Module):
             dropout=0.5,
         )
 
-        self.decoder = MLP2(
+        self.decoder = MLP(
             input_size=rnn_hidden_size,
             hidden_size=mlp_hidden_size,
             output_size=mlp_output_size
