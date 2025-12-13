@@ -214,12 +214,12 @@ def train_model_base(train_loader, val_loader, config, test_loader=None):
                     f'Train Epoch: {epoch}, Progress: {batch_idx}/{num_batches}, Loss: {loss.item():.6f}'
                 )
 
-            val_losses, sub_step_metrics, step_metrics = test_er_model(model, val_loader, criterion, device, phase='val')
+            val_losses, sub_step_metrics, step_metrics = test_er_model(model, val_loader, criterion, device, phase='val', threshold=0.5)
 
             scheduler.step(step_metrics[const.AUC])
 
             if test_loader is not None:
-                test_losses, test_step_metrics = test_er_model(model, test_loader, criterion,
+                test_losses, sub_step_metrics ,test_step_metrics = test_er_model(model, test_loader, criterion,
                                                                                       device, phase='test', threshold=0.5)
 
             avg_train_loss = sum(train_losses) / len(train_losses)
@@ -449,4 +449,4 @@ def test_er_model(model, test_loader, criterion, device, phase, step_normalizati
     print(f"{phase} Step Level Metrics: {step_metrics}")
     print("----------------------------------------------------------------")
 
-    return test_losses, step_metrics
+    return test_losses,0,  step_metrics
