@@ -46,10 +46,12 @@ class RNN(nn.Module):
         if x.dim() == 2:
             x = x.unsqueeze(1)  # [Seq Len, 1, Input Size]
 
+        print("RNN input:", x.shape)
         out, _ = self.rnn(x)  # out: [Seq Len, 1, Hidden Size]
 
         # Prende l'ultimo hidden state lungo Seq Len
         last_hidden_state = out[-1, :, :]  # [1, Hidden Size]
+        print("RNN output (last hidden state):", last_hidden_state.shape)
         return last_hidden_state
 
 

@@ -345,7 +345,8 @@ def test_er_model(model, test_loader, criterion, device, phase, step_normalizati
             data, target = data.to(device), target.to(device)
             output = model(data)
             total_samples += data.shape[0]
-            loss = criterion(output, target)
+            target_step = target.max(dim=0, keepdim=True)[0]  # [1,1]
+            loss = criterion(output, target_step)
             test_losses.append(loss.item())
 
             sigmoid_output = output.sigmoid()
