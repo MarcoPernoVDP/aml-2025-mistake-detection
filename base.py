@@ -328,7 +328,7 @@ def train_sub_step_test_step_dataset_base(config):
 
 
 def test_er_model(model, test_loader, criterion, device, phase, step_normalization=True, sub_step_normalization=True,
-                  threshold=0.6):
+                  threshold=0.0137):
     total_samples = 0
     all_targets = []
     all_outputs = []
