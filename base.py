@@ -370,7 +370,7 @@ def test_er_model(model, test_loader, criterion, device, phase, step_normalizati
     assert not np.isnan(all_outputs).any(), "Outputs contain NaN values"
 
     # -------------------------- Step Level Metrics --------------------------
-    if model.config.variant == const.RNN_VARIANT:
+    if model.config.variant != const.RNN_VARIANT:
         all_step_targets = []
         all_step_outputs = []
 
