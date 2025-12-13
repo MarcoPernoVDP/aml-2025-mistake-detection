@@ -195,9 +195,18 @@ def train_model_base(train_loader, val_loader, config, test_loader=None):
                 optimizer.zero_grad()
                 output = model(data)
                 if model.config.variant == const.RNN_VARIANT:
+                    if batch_idx == 0 and epoch == 1:
+                        print(f"\n=== TRAINING DEBUG (Epoch {epoch}, Batch {batch_idx}) ===")
+                        print(f"data shape: {data.shape}")
+                        print(f"output shape: {output.shape}, logit value: {output.item():.4f}")
+                        print(f"target shape BEFORE max: {target.shape}")
+                        print(f"target has error? {target.max().item()}")
                     # target: [Seq Len,1] -> ridotto a un singolo valore per passo
                     # se vuoi considerare errore in qualsiasi frame:
                     target = target.max(dim=0, keepdim=True)[0]  # [1,1]
+                    if batch_idx == 0 and epoch == 1:
+                        print(f"target AFTER max: {target.item()}")
+                        print(f"output sigmoid: {output.sigmoid().item():.4f}")
                 loss = criterion(output, target)
 
                 if torch.isnan(loss).any():
@@ -215,6 +224,11 @@ def train_model_base(train_loader, val_loader, config, test_loader=None):
                 )
 
             val_losses, sub_step_metrics, step_metrics = test_er_model(model, val_loader, criterion, device, phase='val', threshold=0.5)
+            
+            if epoch == 1 and model.config.variant == const.RNN_VARIANT:
+                print(f"\n=== TRAINING LOSS STATS (Epoch {epoch}) ===")
+                print(f"Avg train loss: {sum(train_losses)/len(train_losses):.6f}")
+                print(f"Avg val loss: {sum(val_losses)/len(val_losses):.6f}")
 
             scheduler.step(step_metrics[const.AUC])
 

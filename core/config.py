@@ -21,8 +21,8 @@ class Config(object):
         self.split = "step"
         self.batch_size = 1
         self.test_batch_size = 1
-        self.num_epochs = 10
-        self.lr = 1e-3
+        self.num_epochs = 2
+        self.lr = 1e-2
         self.weight_decay = 1e-3
         self.log_interval = 5
         self.dry_run = False
