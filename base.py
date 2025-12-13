@@ -425,11 +425,19 @@ def test_er_model(model, test_loader, criterion, device, phase, step_normalizati
         #pr_auc = binary_auprc(torch.tensor(pred_step_labels), torch.tensor(all_step_targets))
 
     elif model.config.variant == const.RNN_VARIANT:
-        # For non-RNN models, use the outputs directly
+        # For RNN models, use the outputs directly
         pred_step_labels = (all_outputs > threshold).astype(int)
+        
+        # Debug prints
+        print(f"all_outputs shape: {all_outputs.shape}, min: {all_outputs.min():.4f}, max: {all_outputs.max():.4f}, mean: {all_outputs.mean():.4f}")
+        print(f"all_targets shape: {all_targets.shape}, unique values: {np.unique(all_targets)}")
+        print(f"pred_step_labels shape: {pred_step_labels.shape}, unique values: {np.unique(pred_step_labels)}")
+        print(f"Number of positive predictions: {pred_step_labels.sum()}")
+        print(f"Number of positive targets: {all_targets.sum()}")
+        
         precision = precision_score(all_targets, pred_step_labels, zero_division=0)
-        recall = recall_score(all_targets, pred_step_labels)
-        f1 = f1_score(all_targets, pred_step_labels)
+        recall = recall_score(all_targets, pred_step_labels, zero_division=0)
+        f1 = f1_score(all_targets, pred_step_labels, zero_division=0)
         accuracy = accuracy_score(all_targets, pred_step_labels)
 
         auc = roc_auc_score(all_targets, all_outputs)
